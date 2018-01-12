@@ -1,0 +1,27 @@
+{
+    "name": "amirkhh/savano",
+    "description": "Savano Payment Gateway Extension For Yii2",
+    "type": "yii2-extension",
+    "keywords": ["Savano","online","payment","iran","persian"],
+    "license": "MIT License",
+    "authors": [
+        {
+            "name": "Amir Khoshhal",
+            "email": "amirkhoshhal@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "amirkhh\\savano\\": ""
+        }
+    },
+    "repositories":[
+        {
+            "type": "git",
+            "url": "git@github.com/amirkhh/yii2-savano.git"
+        }
+    ]
+}
