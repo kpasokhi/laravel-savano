@@ -4,31 +4,55 @@ namespace amirkhh\savano;
 
 use yii\base\Model;
 
+/**
+ * Savano Payment Gateway Extension For Yii2
+ *
+ * @author Amir Khoshhal <amirkhoshhal@gmail.com>
+ */
+
 class Savano extends Model
 {
-    public $pin;
-    public $callback;
-    public $form;
-    public $formDetails;
-    public $au;////// private
-    public $bankAu = 0;
-    public $result = 0;
-    public $errMsg = null;
+    public  $pin;
+    public  $callback;
+    private $form;
+    private $formDetails;
+    private $authority;
+    private $bankAuthority = 0;
+    private $result = 0;
+    private $errMsg = null;
 
-    public function request(int $price, int $orderId, string $callback, $email = '', $description = '', $name = '', $mobile = '', $ip = '', $callbackType = 2): Savano
+
+    /**
+     * Payment Request
+     *
+     * Save Authority In Your Database, You Need This When You Call Verify Method
+     *
+     * @param int    $price
+     * @param int    $orderId
+     * @param string $callback
+     * @param string $email
+     * @param string $description
+     * @param string $name
+     * @param string $mobile
+     * @param string $ip
+     * @param int    $callbackType
+     *
+     * @return $this
+     */
+    public function request($price, $orderId, $callback, $email = '', $description = '', $name = '', $mobile = '', $ip = '', $callbackType = 2)
     {
         $this->callback = $callback;
 
         $dataString = json_encode([
-            'pin' => $this->pin,
-            'price' => $price,
+            'pin'      => $this->pin,
+            'price'    => $price,
             'callback' => $this->callback,
             'order_id' => $orderId,
-            'email' => $email,
-            'description' => $description,
-            'name' => $name,
-            'mobile' => $mobile,
-            'ip' => $ip,
+            'email'    => $email,
+            'description'   => $description,
+            'name'          => $name,
+            'mobile'        => $mobile,
+            'ip'            => $ip,
             'callback_type' => $callbackType,
         ]);
 
@@ -37,9 +61,9 @@ class Savano extends Model
         // Result
         $json = json_decode($result,true);
 
-        $this->result = $json['result'];
-        $this->au     = $json['au'];
-        $this->errMsg = $json['msg'];
+        $this->result    = $json['result'];
+        $this->authority = $json['au'];
+        $this->errMsg    = $json['msg'];
 
         if($this->result === 1)
         {
@@ -48,25 +72,32 @@ class Savano extends Model
         }
 
         return $this;
-        //var_dump($json);
     }
 
-    public function verify(string $au, int $price, int $orderId): Savano
+    /**
+     * Payment Verification
+     *
+     * @param string $authority
+     * @param int $price
+     * @param int $orderId
+     *
+     * @return $this
+     */
+    public function verify($authority, $price, $orderId)
     {
-        $this->au = $au;
+        $this->authority = $authority;
 
         $dataString = json_encode([
-            'pin' => $this->pin,
-            'price' => $price,
+            'pin'      => $this->pin,
+            'price'    => $price,
             'order_id' => $orderId,
-            'au' => $this->au,
-            'bank_return' =>
-                [
-                    'SaleReferenceId' => '20170814113803',
-                    'ResCode' => 'random_res_code_8',
-                    'card_pan' => '1111111111111111',
-                    'State' => '1',
-                ],
+            'au'       => $this->authority,
+            'bank_return' => [
+                'SaleReferenceId' => '20170814113803',
+                'ResCode'  => 'random_res_code_8',
+                'card_pan' => '1111111111111111',
+                'State'    => '1',
+            ],
         ]);
 
         $result = $this->curl('https://developerapi.net/api/v1/verify', $dataString);
@@ -74,14 +105,48 @@ class Savano extends Model
         // Result
         $json = json_decode($result, true);
 
-        $this->result = $json['result'];
-        $this->au     = $json['au'];
-        $this->bankAu = $json['bank_au'];
+        $this->result        = $json['result'];
+        $this->authority     = $json['au'];
+        $this->bankAuthority = $json['bank_au'];
+
+        if($this->result < 0)
+            $this->errMsg    = $json['msg'];
 
         return $this;
     }
 
-    public function getRedirectUrl(): string
+    /**
+     * Get Result Code
+     * @return int
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * Get Authority
+     * @return mixed
+     */
+    public function getAuthority()
+    {
+        return $this->authority;
+    }
+
+    /**
+     * Get Form To Redirect User To Bank
+     * @return mixed
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
+     * Get Redirect Url
+     * @return string
+     */
+    public function getRedirectUrl()
     {
         $url = $this->formDetails['action'];
 
@@ -92,7 +157,13 @@ class Savano extends Model
         return $finalUrl;
     }
 
-    private function curl(string $url, string $data): string
+    /**
+     * Send Request by CURL
+     * @param $url
+     * @param $data
+     * @return mixed
+     */
+    private function curl($url, $data)
     {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
