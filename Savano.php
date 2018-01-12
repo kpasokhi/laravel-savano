@@ -63,12 +63,15 @@ class Savano extends Model
 
         $this->result    = $json['result'];
         $this->authority = $json['au'];
-        $this->errMsg    = $json['msg'];
 
         if($this->result === 1)
         {
             $this->form        = $json['form'];
             $this->formDetails = $json['form_details'];
+        }
+        else
+        {
+            $this->errMsg      = $json['msg'];
         }
 
         return $this;
@@ -107,10 +110,15 @@ class Savano extends Model
 
         $this->result        = $json['result'];
         $this->authority     = $json['au'];
-        $this->bankAuthority = $json['bank_au'];
 
-        if($this->result < 0)
-            $this->errMsg    = $json['msg'];
+        if($this->result === 1)
+        {
+            $this->bankAuthority = $json['bank_au'];
+        }
+        else if($this->result < 0)
+        {
+            $this->errMsg        = $json['msg'];
+        }
 
         return $this;
     }
@@ -131,6 +139,15 @@ class Savano extends Model
     public function getAuthority()
     {
         return $this->authority;
+    }
+
+    /**
+     * Get Error Message
+     * @return mixed
+     */
+    public function getErrorMessage()
+    {
+        return $this->errMsg;
     }
 
     /**
