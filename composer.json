@@ -1,27 +1,31 @@
 {
-    "name": "amirkhh/savano",
-    "description": "Savano Payment Gateway Extension For Yii2",
-    "type": "yii2-extension",
+    "name": "kpasokhi/savano",
+    "description": "Savano Payment Gateway For Laravel",
+    "type": "laravel-package",
     "keywords": ["Savano","online","payment","iran","persian"],
     "license": "MIT License",
     "authors": [
         {
             "name": "Amir Khoshhal",
             "email": "amirkhoshhal@gmail.com"
+        },
+        {
+            "name": "Koorosh Pasokhi",
+            "email": "kpasokhi@gmail.com"
         }
     ],
     "require": {
-        "yiisoft/yii2": "*"
+        "laravel/framework": "*"
     },
     "autoload": {
         "psr-4": {
-            "amirkhh\\savano\\": ""
+            "kpasokhi\\savano\\": ""
         }
     },
     "repositories":[
         {
             "type": "git",
-            "url": "git@github.com/amirkhh/yii2-savano.git"
+            "url": "git@github.com/kpasokhi/savano.git"
         }
     ]
 }

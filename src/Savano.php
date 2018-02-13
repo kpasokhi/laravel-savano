@@ -1,16 +1,15 @@
 <?php
 
-namespace amirkhh\savano;
-
-use yii\base\Model;
+namespace kpasokhi\savano;
 
 /**
- * Savano Payment Gateway Extension For Yii2
+ * Savano Payment Gateway Extension For Laravel
  *
  * @author Amir Khoshhal <amirkhoshhal@gmail.com>
+ * @author Koorosh Pasokhi <kpasokhi@gmail.com>
  */
 
-class Savano extends Model
+class Savano
 {
     public  $pin;
     public  $callback;

@@ -1,6 +1,6 @@
 Savano Payment
 ================
-Savano Payment Gateway Extension For Yii2
+Savano Payment Gateway For Laravel
 
 Installation
 ==============
@@ -8,11 +8,11 @@ The preferred way to install this extension is through composer.
 
 Either run
 ```
-php composer.phar require amirkhh/savano
+php composer.phar require kpasokhi/savano
 ```
 or add
 ```
-"amirkhh/savano": "dev-master"
+"kpasokhi/savano": "dev-master"
 ```
 to the require section of your ``composer.json`` file.
     
@@ -21,7 +21,7 @@ How to use this extension
 For example, imagine that you have a controller called this PaymentController at first you need 2 actions,
 one of them is for request payment and another is verify payment.
 
-you need to use an storage to save your payments and payments status.
+You need to use an storage to save your payments and payments status.
 
 ``PaymentController.php``
 ```
