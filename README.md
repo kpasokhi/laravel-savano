@@ -12,7 +12,7 @@ php composer.phar require kpasokhi/savano
 ```
 or add
 ```
-"kpasokhi/savano": "dev-master"
+"kpasokhi/savano": "1.*"
 ```
 to the require section of your ``composer.json`` file.
     
