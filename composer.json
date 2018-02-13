@@ -3,7 +3,7 @@
     "description": "Savano Payment Gateway For Laravel",
     "type": "laravel-package",
     "keywords": ["Savano","online","payment","iran","persian"],
-    "license": "MIT License",
+    "license": "MIT",
     "authors": [
         {
             "name": "Amir Khoshhal",
